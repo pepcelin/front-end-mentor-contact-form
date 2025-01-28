@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="form-container">
+        <h2 class="text-center mb-4">Contact Us</h2>
+        <form id="contactForm" class="text-success">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="firstName" class="form-label">First Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="firstName">
+                    <div class="error" id="firstNameError"></div>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Last Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="lastName">
+                    <div class="error" id="lastNameError"></div>
+                </div>
+            </div>
+            <div class="mb-3 mt-4">
+                <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" id="email">
+                <div class="error" id="emailError"></div>
+            </div>
+
+
+            
+            <div class="mb-3 mt-4">
+                <label class="form-label">Query Type <span class="text-danger">*</span></label>
+                <div class="d-flex justify-content-around mt-4">
+
+
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input ms-3" type="radio" name="queryType" id="generalEnquiry"
+                            value="generalEnquiry">
+                        <label class="form-check-label ms-3" for="generalEnquiry">General Enquiry</label>
+                    </div>
+
+
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input ms-3" type="radio" name="queryType" id="supportRequest"
+                            value="supportRequest">
+                        <label class="form-check-label ms-3" for="supportRequest">Support Request</label>
+                    </div>
+                </div>
+
+
+
+                <div class="error" id="queryTypeError"></div>
+            </div>
+
+            <div class="mb-3 mt-4">
+                <label for="message" class="form-label">Message <span class="text-danger">*</span></label>
+                <textarea class="form-control mt-3" id="message" rows="4"></textarea>
+                <div class="error" id="messageError"></div>
+            </div>
+            <div class="mb-3 form-check mt-4" id="noborder">
+                <input type="checkbox" class="form-check-input" id="consent">
+                <label class="form-check-label" for="consent">I consent to being contacted by the team
+                    <span class="text-danger">*</span></label>
+                <div class="error" id="consentError"></div>
+            </div>
+            <button type="submit" class="btn btn-submit mt-4 w-100">Submit</button>
+        </form>
+        
+    </div>
+    <div class="attribution">
+        Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
+        Coded by <a href="#">Pepcelin jino</a>.
+      </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("contactForm");
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                clearErrors();
+
+                let isValid = true;
+
+
+                const firstName = document.getElementById("firstName").value;
+                const firstNameError = document.getElementById("firstNameError");
+                const firstNamePattern = /^[A-Za-z]+$/;
+                if (!firstName.trim()) {
+                    firstNameError.textContent = "This Field is required.";
+                    firstNameError.style.display = "block";
+                    isValid = false;
+                } else if (!firstNamePattern.test(firstName)) {
+                    firstNameError.textContent = "Please enter a valid first name (letters only).";
+                    firstNameError.style.display = "block";
+                    isValid = false;
+                }
+
+
+                const lastName = document.getElementById("lastName").value;
+                const lastNameError = document.getElementById("lastNameError");
+                const lastNamePattern = /^[A-Za-z]+$/;
+                if (!lastName.trim()) {
+                    lastNameError.textContent = "This Field is required.";
+                    lastNameError.style.display = "block";
+                    isValid = false;
+                } else if (!lastNamePattern.test(lastName)) {
+                    lastNameError.textContent = "Please enter a valid last name (letters only).";
+                    lastNameError.style.display = "block";
+                    isValid = false;
+                }
+
+                const email = document.getElementById("email").value;
+                const emailError = document.getElementById("emailError");
+                const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+                if (!emailPattern.test(email)) {
+                    emailError.textContent = "Please enter a valid email address.";
+                    emailError.style.display = "block";
+                    isValid = false;
+                }
+
+                const queryType = document.querySelector('input[name="queryType"]:checked');
+                const queryTypeError = document.getElementById("queryTypeError");
+                if (!queryType) {
+                    queryTypeError.textContent = "Please select a query type.";
+                    queryTypeError.style.display = "block";
+                    isValid = false;
+                }
+
+                const message = document.getElementById("message").value;
+
+                const messageError = document.getElementById("messageError");
+
+                if (!message.trim()) {
+                    messageError.textContent = "This Field is required.";
+                    messageError.style.display = "block";
+                    isValid = false;
+                }
+
+
+                const consent = document.getElementById("consent").checked;
+                const consentError = document.getElementById("consentError");
+                if (!consent) {
+                    consentError.textContent = "To submit this form,please consent to being contacted.";
+                    consentError.style.display = "block";
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    setTimeout(function () {
+                        alert("Form submitted successfully!");
+                        form.reset();
+                    }, 2000);
+                }
+            });
+
+            function clearErrors() {
+                const errorElements = document.querySelectorAll(".error");
+                errorElements.forEach(error => {
+                    error.textContent = "";
+                    error.style.display = "none";
+                });
+            }
+        });
+    </script>
+
+</body>
+
+</html>
